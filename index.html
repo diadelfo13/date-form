@@ -372,7 +372,7 @@
 <!-- SLIDE 4: When are you free? -->
 <div class="slide" id="slide4">
   <div class="card">
-    <iframe class="gif-frame" src="https://giphy.com/embed/lP4jmO461gq9uLzzYc" frameBorder="0" allowFullScreen></iframe>
+    <div style="font-size:60px;margin-bottom:16px;">📅🐾</div>
     <h2>So... when are you free?</h2>
     <br>
     <div class="form-group">
@@ -487,7 +487,9 @@
     const grid = el.closest('.pick-grid');
     grid.querySelectorAll('.pick-option').forEach(o => o.classList.remove('selected'));
     el.classList.add('selected');
-    picks[category] = el.textContent.trim();
+    // Get text only (strip emoji)
+    const label = el.childNodes[el.childNodes.length - 1].textContent.trim();
+    picks[category] = label;
     checkPickerReady();
   }
 
@@ -520,6 +522,7 @@
     const msg = encodeURIComponent(
       `hi husband, I'm requesting a ${picks.food || 'food'} date on ${dateDisplay || 'a day you pick'} at ${time || 'a time you pick'}`
     );
+    // fallback removed — time should always be selected
 
     document.getElementById('imessageBtn').href = `sms:+14388329000&body=${msg}`;
 
