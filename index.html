@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>important question 💕</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Quicksand', sans-serif;
+    background: #fff5f7;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Falling hearts */
+  .hearts-container {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .falling-heart {
+    position: absolute;
+    top: -40px;
+    animation: fall linear infinite;
+    opacity: 0.6;
+    font-size: 20px;
+  }
+
+  @keyframes fall {
+    0% { transform: translateY(-40px) rotate(0deg); opacity: 0.7; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+  }
+
+  /* Slides */
+  .slide {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 30px 20px;
+    max-width: 500px;
+    width: 90vw;
+    z-index: 10;
+    position: relative;
+    animation: fadeIn 0.5s ease;
+  }
+
+  .slide.active { display: flex; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Card style */
+  .card {
+    background: white;
+    border-radius: 24px;
+    padding: 40px 30px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+    width: 100%;
+  }
+
+  /* GIF iframes */
+  .gif-frame {
+    width: 200px;
+    height: 200px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+    border: none;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .gif-circle-frame {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    margin-bottom: 24px;
+    border: none;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  /* Typography */
+  h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #8b1a4a;
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+
+  h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #8b1a4a;
+    margin-bottom: 8px;
+  }
+
+  h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #8b1a4a;
+    margin-top: 24px;
+    margin-bottom: 4px;
+  }
+
+  .subtitle {
+    font-size: 15px;
+    color: #999;
+    margin-bottom: 24px;
+    font-style: italic;
+  }
+
+  /* Buttons */
+  .btn-yes {
+    background: linear-gradient(135deg, #ffb6c1, #ff8fa3);
+    color: white;
+    border: none;
+    padding: 14px 40px;
+    border-radius: 50px;
+    font-size: 18px;
+    font-weight: 700;
+    font-family: 'Quicksand', sans-serif;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 15px rgba(255,143,163,0.4);
+  }
+
+  .btn-yes:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(255,143,163,0.6);
+  }
+
+  .btn-no {
+    background: #e8e0f0;
+    color: #8b7aa8;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: 'Quicksand', sans-serif;
+    cursor: pointer;
+    transition: all 0.1s;
+    position: relative;
+  }
+
+  .btn-row {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 24px;
+    position: relative;
+    min-height: 60px;
+  }
+
+  .btn-next {
+    background: linear-gradient(135deg, #ffb6c1, #ff8fa3);
+    color: white;
+    border: none;
+    padding: 14px 36px;
+    border-radius: 50px;
+    font-size: 17px;
+    font-weight: 700;
+    font-family: 'Quicksand', sans-serif;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 15px rgba(255,143,163,0.4);
+    margin-top: 20px;
+  }
+
+  .btn-next:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(255,143,163,0.6);
+  }
+
+  /* Picker grids (food, drinks, ice cream) */
+  .pick-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .pick-option {
+    background: #f0eaf5;
+    border: 3px solid transparent;
+    border-radius: 16px;
+    padding: 14px 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #6b5b7b;
+  }
+
+  .pick-option:hover {
+    background: #e8ddf2;
+    transform: scale(1.05);
+  }
+
+  .pick-option.selected {
+    border-color: #ff8fa3;
+    background: #fff0f3;
+    color: #8b1a4a;
+  }
+
+  .pick-emoji {
+    font-size: 28px;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .pick-option.pick-me {
+    background: linear-gradient(135deg, #fff0f3, #ffe0e6);
+    border: 3px dashed #ff8fa3;
+    animation: pickMeBounce 1s ease infinite;
+    font-weight: 700;
+    color: #8b1a4a;
+  }
+
+  .pick-option.pick-me:hover {
+    background: linear-gradient(135deg, #ffe0e6, #ffd0d8);
+  }
+
+  @keyframes pickMeBounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+  }
+
+  /* Date/time form */
+  .form-group {
+    text-align: left;
+    margin-bottom: 16px;
+    width: 100%;
+  }
+
+  .form-group label {
+    font-size: 14px;
+    font-weight: 700;
+    color: #8b1a4a;
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .form-group input,
+  .form-group select {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #f0e8f0;
+    border-radius: 12px;
+    font-size: 15px;
+    font-family: 'Quicksand', sans-serif;
+    color: #555;
+    background: #fafafa;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus {
+    border-color: #ffb6c1;
+  }
+
+  .form-group select option:disabled {
+    color: #cc3333;
+    font-weight: 700;
+  }
+
+  /* iMessage button */
+  .btn-imessage {
+    background: linear-gradient(135deg, #34C759, #30D158);
+    color: white;
+    border: none;
+    padding: 16px 40px;
+    border-radius: 50px;
+    font-size: 18px;
+    font-weight: 700;
+    font-family: 'Quicksand', sans-serif;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 15px rgba(52,199,89,0.4);
+    margin-top: 20px;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .btn-imessage:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(52,199,89,0.6);
+  }
+
+  .ps-text {
+    font-size: 13px;
+    color: #aaa;
+    font-style: italic;
+    margin-top: 20px;
+    line-height: 1.5;
+  }
+
+  /* Responsive */
+  @media (max-width: 420px) {
+    .card { padding: 28px 18px; }
+    h1 { font-size: 24px; }
+    .gif-frame { width: 160px; height: 160px; }
+    .pick-grid { gap: 8px; }
+    .pick-option { padding: 12px 6px; font-size: 12px; }
+    .pick-emoji { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Falling hearts background -->
+<div class="hearts-container" id="heartsContainer"></div>
+
+<!-- SLIDE 1: Will you go on a date with me? -->
+<div class="slide active" id="slide1">
+  <div class="card">
+    <iframe class="gif-frame" src="https://giphy.com/embed/Q343jgPdGDu251pGvI" frameBorder="0" allowFullScreen></iframe>
+    <h1>🌸 Will you go on a date with me? 🌸</h1>
+    <div class="btn-row">
+      <button class="btn-yes" onclick="goToSlide(2)">YES 💕</button>
+      <button class="btn-no" id="noBtn">no... 😾</button>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 2: Wait you actually said yes?? -->
+<div class="slide" id="slide2">
+  <div class="card">
+    <iframe class="gif-frame" src="https://giphy.com/embed/3oxOCdmfrrnkNacsJa" frameBorder="0" allowFullScreen></iframe>
+    <h1>WAIT YOU ACTUALLY SAID YES?? 😭</h1>
+    <p class="subtitle">I was so ready for you to say no 🥹</p>
+    <button class="btn-next" onclick="goToSlide(3)">okay okay! →</button>
+  </div>
+</div>
+
+<!-- SLIDE 3: Food + Drinks + Ice Cream picker (ONE page) -->
+<div class="slide" id="slide3">
+  <div class="card">
+    <h2>What are we feeling? 🍽✨</h2>
+    <div class="pick-grid" id="foodGrid">
+      <div class="pick-option" onclick="pick('food',this)"><span class="pick-emoji">🍸</span>Cocktails</div>
+      <div class="pick-option" onclick="pick('food',this)"><span class="pick-emoji">🍣</span>Sushi</div>
+      <div class="pick-option" onclick="pick('food',this)"><span class="pick-emoji">🍔</span>Burgers</div>
+      <div class="pick-option" onclick="pick('food',this)"><span class="pick-emoji">🍦</span>Ice Cream</div>
+      <div class="pick-option" onclick="pick('food',this)"><span class="pick-emoji">🌮</span>Tacos</div>
+      <div class="pick-option" onclick="pick('food',this)"><span class="pick-emoji">🍜</span>Ramen</div>
+    </div>
+
+    <button class="btn-next" id="pickerNext" onclick="goToSlide(4)" style="opacity:0.4;pointer-events:none;">next →</button>
+  </div>
+</div>
+
+<!-- SLIDE 4: When are you free? -->
+<div class="slide" id="slide4">
+  <div class="card">
+    <iframe class="gif-frame" src="https://giphy.com/embed/lP4jmO461gq9uLzzYc" frameBorder="0" allowFullScreen></iframe>
+    <h2>So... when are you free?</h2>
+    <br>
+    <div class="form-group">
+      <label>Pick a Day ✨</label>
+      <input type="date" id="dateInput">
+    </div>
+    <div class="form-group">
+      <label>What Time? ⏰</label>
+      <select id="timeInput">
+        <option value="">Select a time...</option>
+        <option value="5:00 PM">5:00 PM — we eating with the retirees</option>
+        <option value="6:00 PM">6:00 PM — this is the right answer tbh</option>
+        <option value="7:00 PM">7:00 PM — you're making me hungry already</option>
+        <option value="8:00 PM">8:00 PM — ⭐ my pick, just saying</option>
+        <option value="9:00 PM">9:00 PM — fashionably late, I respect it</option>
+        <option value="10:00 PM">10:00 PM — okay night owl 🦉</option>
+        <option value="11:00 PM" disabled>⚠️ 11:00 PM+ — DANGER ZONE (not on a first date)</option>
+      </select>
+    </div>
+    <button class="btn-next" onclick="setDate()">set the date! 💕</button>
+  </div>
+</div>
+
+<!-- SLIDE 5: Final — Shrek + imessage -->
+<div class="slide" id="slide5">
+  <div class="card">
+    <iframe class="gif-circle-frame" src="https://giphy.com/embed/BBBx74mQ4a5sQoZydk" frameBorder="0" allowFullScreen></iframe>
+    <h1>glad you didn't say no. be ready by <span id="finalTime">8</span>, I'm coming to get you 🚗</h1>
+    <p class="ps-text">P.S. normal people text. I made a whole website, for you. no big deal.</p>
+    <a class="btn-imessage" id="imessageBtn" href="sms:+14388329000">
+      Text me 💬
+    </a>
+  </div>
+</div>
+
+<script>
+  // ---- Falling hearts ----
+  const hearts = ['💕', '💗', '💖', '🩷', '❤️', '🌸'];
+  const container = document.getElementById('heartsContainer');
+
+  function spawnHeart() {
+    const el = document.createElement('div');
+    el.className = 'falling-heart';
+    el.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+    el.style.left = Math.random() * 100 + 'vw';
+    el.style.fontSize = (14 + Math.random() * 16) + 'px';
+    el.style.animationDuration = (4 + Math.random() * 6) + 's';
+    el.style.animationDelay = '0s';
+    container.appendChild(el);
+    setTimeout(() => el.remove(), 12000);
+  }
+
+  setInterval(spawnHeart, 300);
+  for (let i = 0; i < 15; i++) setTimeout(spawnHeart, i * 200);
+
+  // ---- Set date range: today to 4 weeks from now ----
+  const today = new Date();
+  const maxDate = new Date(today);
+  maxDate.setDate(maxDate.getDate() + 28);
+  const todayStr = today.toISOString().split('T')[0];
+  const maxStr = maxDate.toISOString().split('T')[0];
+  const dateInput = document.getElementById('dateInput');
+  dateInput.setAttribute('min', todayStr);
+  dateInput.setAttribute('max', maxStr);
+
+  // ---- No button dodge ----
+  const noBtn = document.getElementById('noBtn');
+  let dodgeCount = 0;
+
+  function dodge(e) {
+    dodgeCount++;
+    const card = noBtn.closest('.card');
+    const rect = card.getBoundingClientRect();
+    const btnW = noBtn.offsetWidth;
+    const btnH = noBtn.offsetHeight;
+
+    const maxX = rect.width - btnW - 20;
+    const maxY = rect.height - btnH - 20;
+    const newX = Math.random() * maxX;
+    const newY = Math.max(100, Math.random() * maxY);
+
+    noBtn.style.position = 'absolute';
+    noBtn.style.left = newX + 'px';
+    noBtn.style.top = newY + 'px';
+    noBtn.style.zIndex = 100;
+
+    const scale = Math.max(0.5, 1 - dodgeCount * 0.08);
+    noBtn.style.transform = `scale(${scale})`;
+
+    const msgs = ['nice try 😏', 'nope 🙅‍♂️', 'not happening', 'keep trying lol', 'you sure? 🥺', 'wrong button 💅', 'catch me if u can'];
+    noBtn.textContent = msgs[dodgeCount % msgs.length];
+  }
+
+  noBtn.addEventListener('mouseenter', dodge);
+  noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); dodge(e); });
+
+  // ---- Slide navigation ----
+  function goToSlide(n) {
+    document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+    const target = document.getElementById('slide' + n);
+    target.classList.add('active');
+    target.style.animation = 'none';
+    target.offsetHeight;
+    target.style.animation = '';
+    window.scrollTo(0, 0);
+  }
+
+  // ---- Unified picker ----
+  const picks = { food: '', drink: '', dessert: '' };
+
+  function pick(category, el) {
+    const grid = el.closest('.pick-grid');
+    grid.querySelectorAll('.pick-option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    picks[category] = el.textContent.trim();
+    checkPickerReady();
+  }
+
+  function checkPickerReady() {
+    // Need at least food selected to proceed
+    const btn = document.getElementById('pickerNext');
+    if (picks.food) {
+      btn.style.opacity = '1';
+      btn.style.pointerEvents = 'auto';
+    }
+  }
+
+  // ---- Date setter ----
+  function setDate() {
+    const time = document.getElementById('timeInput').value;
+    const date = document.getElementById('dateInput').value;
+
+    if (time) {
+      const hour = time.replace(':00', '');
+      document.getElementById('finalTime').textContent = hour;
+    }
+
+    // Format date nicely
+    let dateDisplay = date;
+    if (date) {
+      const d = new Date(date + 'T12:00:00');
+      dateDisplay = d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+    }
+
+    const msg = encodeURIComponent(
+      `hi husband, I'm requesting a ${picks.food || 'food'} date on ${dateDisplay || 'a day you pick'} at ${time || 'a time you pick'}`
+    );
+
+    document.getElementById('imessageBtn').href = `sms:+14388329000&body=${msg}`;
+
+    goToSlide(5);
+  }
+</script>
+
+</body>
+</html>
