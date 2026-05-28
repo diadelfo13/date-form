@@ -442,6 +442,15 @@
   dateInput.setAttribute('min', todayStr);
   dateInput.setAttribute('max', maxStr);
 
+  // ---- Validate date on mobile (Safari ignores min/max visually) ----
+  dateInput.addEventListener('change', function() {
+    const val = this.value;
+    if (val < todayStr || val > maxStr) {
+      this.value = '';
+      alert('Pick a day between today and 4 weeks from now 💕');
+    }
+  });
+
   // ---- No button dodge ----
   const noBtn = document.getElementById('noBtn');
   let dodgeCount = 0;
