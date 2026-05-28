@@ -375,7 +375,7 @@
 <!-- SLIDE 4: When are you free? -->
 <div class="slide" id="slide4">
   <div class="card">
-    <div style="font-size:60px;margin-bottom:16px;">📅🐾</div>
+    <iframe class="gif-frame" src="https://giphy.com/embed/L45Nt0ttUm4zZ3kmex" frameBorder="0" allowFullScreen></iframe>
     <h2>So... when are you free?</h2>
     <br>
     <div class="form-group">
@@ -435,8 +435,9 @@
   const today = new Date();
   const maxDate = new Date(today);
   maxDate.setDate(maxDate.getDate() + 28);
-  const todayStr = today.toISOString().split('T')[0];
-  const maxStr = maxDate.toISOString().split('T')[0];
+  const pad = (n) => String(n).padStart(2, '0');
+  const todayStr = today.getFullYear() + '-' + pad(today.getMonth() + 1) + '-' + pad(today.getDate());
+  const maxStr = maxDate.getFullYear() + '-' + pad(maxDate.getMonth() + 1) + '-' + pad(maxDate.getDate());
   const dateInput = document.getElementById('dateInput');
   dateInput.setAttribute('min', todayStr);
   dateInput.setAttribute('max', maxStr);
